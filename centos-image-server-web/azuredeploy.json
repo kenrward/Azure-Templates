@@ -4,7 +4,6 @@
     "parameters": {
 		"prefixName": {
             "type": "string",
-            ],
             "metadata": {
                 "description": "Name prefix (e.g. Program Office)"
             }
