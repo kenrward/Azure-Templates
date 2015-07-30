@@ -9,6 +9,13 @@
                 "description": "Name prefix (e.g. Program Office)"
             }
         },
+		"storageAccountName": {
+            "type": "string",
+            ],
+            "metadata": {
+                "description": "Storage Account Name(must be all lowercase, no special characters)"
+            }
+        },
 		"project": {
             "type": "string",
             "metadata": {
@@ -83,7 +90,6 @@
     },
     "variables": {
         "imagePublisher": "OpenLogic",
-		"storageAccountName": "[concat(parameters('prefixName'),parameters('project'),'str')]",
         "imageOffer": "CentOS",
         "OSDiskName": "osdiskforlinuxsimple",
         "nicName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nic')]",
@@ -101,7 +107,7 @@
     },
     "resources": [{
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[variables('storageAccountName')]",
+        "name": "[parameters('storageAccountName')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[parameters('location')]",
         "properties": {
@@ -165,7 +171,7 @@
         "name": "[variables('vmName')]",
         "location": "[parameters('location')]",
         "dependsOn": [
-            "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+            "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
             "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
         ],
         "properties": {
@@ -187,7 +193,7 @@
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+                        "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
