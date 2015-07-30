@@ -4,14 +4,12 @@
     "parameters": {
 		"prefixName": {
             "type": "string",
-            ],
             "metadata": {
                 "description": "Name prefix (e.g. Program Office)"
             }
         },
 		"storageAccountName": {
             "type": "string",
-            ],
             "metadata": {
                 "description": "Storage Account Name(must be all lowercase, no special characters)"
             }
