@@ -1,0 +1,244 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+		"prefixName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name prefix (e.g. Program Office)"
+            }
+        },
+		"storageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Storage Account Name(must be all lowercase, no special characters)"
+            }
+        },
+		"project": {
+            "type": "string",
+            "metadata": {
+                "description": "Short project description (must be between 3 and 24 characters in length and use numbers and lower-case letters only)."
+            }
+        },
+        "location": {
+            "type": "string",
+            "allowedValues": [
+				"Central US",
+				"East US",
+				"East US 2",
+				"North Central US",
+				"South Central US",
+				"West US"
+            ],
+            "metadata": {
+                "description": "Location of resources"
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "User name for the Virtual Machine."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Virtual Machine."
+            }
+        },
+		"sshKeyData": {
+			"type": "string",
+			"metadata": {
+				"description": "SSH rsa public key file as a string."
+			}
+		},
+		"dnsNameForPublicIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+            }
+        },
+		"vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_A0",
+            "allowedValues": [
+                "Standard_A0",
+                "Standard_A1",
+                "Standard_A2",
+                "Standard_A3",
+                "Standard_A4",
+                "Standard_A5",
+                "Standard_A6",
+                "Standard_D1",
+                "Standard_D2",
+                "Standard_D3",
+                "Standard_D4",
+                "Standard_D11"
+                ],
+            "metadata": {
+                "description": "Size of the Virtual Machine."
+            }
+        },        
+        "imageSKU": {
+            "type": "string",
+            "defaultValue": "6.6",
+            "allowedValues": [
+                "6.5",
+                "6.6",
+                "7.0"
+            ],
+            "metadata": {
+                "description": "The CentOS version for the VM. This will pick a fully patched image of this given CentOS version."
+            }
+        }
+    },
+    "variables": {
+        "imagePublisher": "OpenLogic",
+        "imageOffer": "CentOS",
+        "OSDiskName": "osdiskforlinuxsimple",
+        "nicName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nic')]",
+        "addressPrefix": "10.0.0.0/16",
+        "subnetName": "Subnet",
+        "subnetPrefix": "10.0.0.0/24",
+		"sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+        "storageAccountType": "Standard_LRS",
+        "publicIPAddressName": "[concat(parameters('prefixName'),'-',parameters('project'),'-pubip')]",
+        "publicIPAddressType": "Dynamic",
+        "vmStorageAccountContainerName": "vhds",
+        "vmName": "[concat(parameters('prefixName'),'-',parameters('project'),'-vm')]",
+        "virtualNetworkName": "[concat(parameters('prefixName'),'-',parameters('project'),'-vnet')]",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
+    },
+    "resources": [{
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "[parameters('storageAccountName')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[parameters('location')]",
+        "properties": {
+            "accountType": "[variables('storageAccountType')]"
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('publicIPAddressName')]",
+        "location": "[parameters('location')]",
+        "properties": {
+            "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+            "dnsSettings": {
+                "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+            }
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[variables('virtualNetworkName')]",
+        "location": "[parameters('location')]",
+        "properties": {
+            "addressSpace": {
+                "addressPrefixes": [
+                    "[variables('addressPrefix')]"
+                ]
+            },
+            "subnets": [{
+                "name": "[variables('subnetName')]",
+                "properties": {
+                    "addressPrefix": "[variables('subnetPrefix')]"
+                }
+            }]
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('nicName')]",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+            "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        ],
+        "properties": {
+            "ipConfigurations": [{
+                "name": "ipconfig1",
+                "properties": {
+                    "privateIPAllocationMethod": "Dynamic",
+                    "publicIPAddress": {
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                    },
+                    "subnet": {
+                        "id": "[variables('subnetRef')]"
+                    }
+                }
+            }]
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('vmName')]",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+            "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        ],
+        "properties": {
+            "hardwareProfile": {
+                "vmSize": "[parameters('vmSize')]"
+            },
+            "osProfile": {
+                "computername": "[variables('vmName')]",
+                "adminUsername": "[parameters('adminUsername')]",
+                "adminPassword": "[parameters('adminPassword')]",
+				"linuxConfiguration": {
+					"disablePasswordAuthentication": "true",
+					"ssh": {
+					  "publicKeys": [
+						{
+						  "path": "[variables('sshKeyPath')]",
+						  "keyData": "[parameters('sshKeyData')]"
+						}
+					  ]
+					}
+				}
+            },
+            "storageProfile": {
+                "imageReference": {
+                    "publisher": "[variables('imagePublisher')]",
+                    "offer": "[variables('imageOffer')]",
+                    "sku": "[parameters('imageSKU')]",
+                    "version": "latest"
+                },
+                "osDisk": {
+                    "name": "osdisk",
+                    "vhd": {
+                        "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+                    },
+                    "caching": "ReadWrite",
+                    "createOption": "FromImage"
+                }
+            },
+            "networkProfile": {
+                "networkInterfaces": [{
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                }]
+            }
+        }
+    }, {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(variables('vmName'),'/newuserscript')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+        ],
+        "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.2",
+            "settings": {
+                "fileUris": [
+                    "https://raw.githubusercontent.com/kenrward/gdal-python-imagemap-imagemagick-on-ubuntu/master/install_ossim-core.sh"
+                ],
+                "commandToExecute": "sh install_ossim-core.sh"
+            }
+        }
+    }]
+}
