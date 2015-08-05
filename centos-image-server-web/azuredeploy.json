@@ -46,7 +46,13 @@
                 "description": "Password for the Virtual Machine."
             }
         },
-        "dnsNameForPublicIP": {
+		"sshKeyData": {
+			"type": "string",
+			"metadata": {
+				"description": "SSH rsa public key file as a string."
+			}
+		},
+		"dnsNameForPublicIP": {
             "type": "string",
             "metadata": {
                 "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
@@ -94,6 +100,7 @@
         "addressPrefix": "10.0.0.0/16",
         "subnetName": "Subnet",
         "subnetPrefix": "10.0.0.0/24",
+		"sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
         "storageAccountType": "Standard_LRS",
         "publicIPAddressName": "[concat(parameters('prefixName'),'-',parameters('project'),'-pubip')]",
         "publicIPAddressType": "Dynamic",
@@ -180,6 +187,17 @@
                 "computername": "[variables('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
                 "adminPassword": "[parameters('adminPassword')]"
+				"linuxConfiguration": {
+					"disablePasswordAuthentication": "true",
+					"ssh": {
+					  "publicKeys": [
+						{
+						  "path": "[variables('sshKeyPath')]",
+						  "keyData": "[parameters('sshKeyData')]"
+						}
+					  ]
+					}
+				}
             },
             "storageProfile": {
                 "imageReference": {
