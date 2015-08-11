@@ -2,21 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-		"programOffice": {
+		"prefixName": {
             "type": "string",
-            "allowedValues": [
-                "coops",
-                "nccos",
-				"ngs",
-				"ocm",
-				"ocs",
-				"onms",
-				"orr",
-				"ioos",
-				"nos"
-            ],
             "metadata": {
-                "description": "NOS Program Office"
+                "description": "Name prefix (e.g. Program Office)"
             }
         },
 		"project": {
@@ -28,9 +17,12 @@
         "location": {
             "type": "string",
             "allowedValues": [
-                "West US",
-                "East US",
-				"Central US"
+				"Central US",
+				"East US",
+				"East US 2",
+				"North Central US",
+				"South Central US",
+				"West US"
             ],
             "metadata": {
                 "description": "Location of resources"
@@ -91,19 +83,19 @@
     },
     "variables": {
         "imagePublisher": "Canonical",
-		"storageAccountName": "[concat(parameters('programOffice'),parameters('project'),'str')]",
+		"storageAccountName": "[concat(parameters('prefixName'),parameters('project'),'str')]",
         "imageOffer": "UbuntuServer",
         "OSDiskName": "osdiskforlinuxsimple",
-        "nicName": "[concat(parameters('programOffice'),'-',parameters('project'),'-nic')]",
+        "nicName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nic')]",
         "addressPrefix": "10.0.0.0/16",
         "subnetName": "Subnet",
         "subnetPrefix": "10.0.0.0/24",
         "storageAccountType": "Standard_LRS",
-        "publicIPAddressName": "[concat(parameters('programOffice'),'-',parameters('project'),'-pubip')]",
+        "publicIPAddressName": "[concat(parameters('prefixName'),'-',parameters('project'),'-pubip')]",
         "publicIPAddressType": "Dynamic",
         "vmStorageAccountContainerName": "vhds",
-        "vmName": "[concat(parameters('programOffice'),'-',parameters('project'),'-vm')]",
-        "virtualNetworkName": "[concat(parameters('programOffice'),'-',parameters('project'),'-vnet')]",
+        "vmName": "[concat(parameters('prefixName'),'-',parameters('project'),'-vm')]",
+        "virtualNetworkName": "[concat(parameters('prefixName'),'-',parameters('project'),'-vnet')]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
     },
