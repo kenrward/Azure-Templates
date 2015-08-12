@@ -46,6 +46,12 @@
 				"description": "SSH rsa public key file as a string."
 			}
 		},
+		"storageAccountName": {		
+            "type": "string",		
+            "metadata": {		
+                "description": "Storage Account Name(must be all lowercase, no special characters)"		
+            }		
+        },
         "dnsNameForPublicIP": {
             "type": "string",
             "metadata": {
@@ -96,7 +102,6 @@
         "imagePublisher": "OpenLogic",
         "imageOffer": "CentOS",
         "OSDiskName": "osdiskforlinuxsimple",
-		"storageAccountName": "[concat(parameters('prefixName'),parameters('project'),'str')]",
         "nicName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nic')]",
         "addressPrefix": "10.0.0.0/16",
         "subnetName": "Subnet",
@@ -113,7 +118,7 @@
     },
     "resources": [{
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[variables('storageAccountName')]",
+        "name": "[parameters('storageAccountName')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[parameters('location')]",
         "properties": {
@@ -177,7 +182,7 @@
         "name": "[variables('vmName')]",
         "location": "[parameters('location')]",
         "dependsOn": [
-            "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+            "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
             "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
         ],
         "properties": {
@@ -210,7 +215,7 @@
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+                        "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
