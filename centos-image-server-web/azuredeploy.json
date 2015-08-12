@@ -8,12 +8,6 @@
                 "description": "Name prefix (e.g. Program Office)"
             }
         },
-		"storageAccountName": {
-            "type": "string",
-            "metadata": {
-                "description": "Storage Account Name(must be all lowercase, no special characters)"
-            }
-        },
 		"project": {
             "type": "string",
             "metadata": {
@@ -52,7 +46,7 @@
 				"description": "SSH rsa public key file as a string."
 			}
 		},
-		"dnsNameForPublicIP": {
+        "dnsNameForPublicIP": {
             "type": "string",
             "metadata": {
                 "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
@@ -69,16 +63,22 @@
                 "Standard_A4",
                 "Standard_A5",
                 "Standard_A6",
-                "Standard_D1",
-                "Standard_D2",
-                "Standard_D3",
-                "Standard_D4",
-                "Standard_D11"
+				"Standard_G1",
+                "Standard_G2",
+                "Standard_G3",
+                "Standard_G4",
+                "Standard_G5",
+                "Standard_G6",
+                "Standard_DS1",
+                "Standard_DS2",
+                "Standard_DS3",
+                "Standard_DS4",
+                "Standard_DS11"
                 ],
             "metadata": {
                 "description": "Size of the Virtual Machine."
             }
-        },        
+        },         
         "imageSKU": {
             "type": "string",
             "defaultValue": "6.6",
