@@ -219,7 +219,7 @@
             "typeHandlerVersion": "1.2",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/kenrward/Azure-Templates/gdal-python-imagemap-imagemagick-on-ubuntu/master/install_ossim-core.sh"
+                    "https://raw.githubusercontent.com/kenrward/Azure-Templates/master/gdal-python-imagemap-imagemagick-on-ubuntu-master/install_ossim-core.sh"
                 ],
                 "commandToExecute": "sh install_ossim-core.sh"
             }
