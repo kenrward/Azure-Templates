@@ -191,10 +191,21 @@
                 "vmSize": "[parameters('vmSize')]"
             },
             "osProfile": {
-                "computername": "[variables('vmName')]",
-                "adminUsername": "[parameters('adminUsername')]",
-                "adminPassword": "[parameters('adminPassword')]"
-            },
+                    "computername": "[concat('slavevm', copyIndex())]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "linuxConfiguration" : {
+                        "disablePasswordAuthentication": "false",
+                        "ssh" : {
+                            "publicKeys" : [
+                              {
+                                  "path" : "[variables('sshKeyPath')]",
+                                  "keyData" : "[parameters('sshKeyData')]"
+                              }
+                            ]
+                        }
+                    }
+                },
             "storageProfile": {
                 "imageReference": {
                     "publisher": "[variables('imagePublisher')]",
@@ -217,5 +228,24 @@
                 }]
             }
         }
-    }]
+    }, {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(variables('vmName'),'/install_ansible_reqs')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+        ],
+        "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.2",
+            "settings": {
+                "fileUris": [
+                    "https://raw.githubusercontent.com/kenrward/Azure-Templates/master/centos-image-server-web/install-core.sh"
+                ],
+                "commandToExecute": "sh install-core.sh"
+            }
+        }
+    }]]
 }
