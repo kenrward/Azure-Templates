@@ -1,2 +1,2 @@
 #!/bin/bash
-apt-get -y python-keyczar
+apt-get install -y python-keyczar
