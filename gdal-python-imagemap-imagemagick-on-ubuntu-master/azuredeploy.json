@@ -242,9 +242,9 @@
             "typeHandlerVersion": "1.2",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/kenrward/Azure-Templates/master/centos-image-server-web/install-core.sh"
+                    "https://raw.githubusercontent.com/kenrward/Azure-Templates/master/gdal-python-imagemap-imagemagick-on-ubuntu-master/install_ossim-core.sh"
                 ],
-                "commandToExecute": "sh install-core.sh"
+                "commandToExecute": "sh install_ossim-core.sh"
             }
         }
     }]
