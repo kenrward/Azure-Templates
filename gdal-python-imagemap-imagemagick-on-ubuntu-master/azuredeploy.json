@@ -191,7 +191,7 @@
                 "vmSize": "[parameters('vmSize')]"
             },
             "osProfile": {
-                    "computername": "[concat('slavevm', copyIndex())]",
+                    "computername": "[variables('vmName')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
                     "linuxConfiguration" : {
