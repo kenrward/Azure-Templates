@@ -1,2 +1,2 @@
 #!/bin/bash
-apt-get install -y python-keyczar
+apt-get -y install gdal-bin htop ossim-core python-gdal python-pyproj imagemagick
