@@ -85,7 +85,7 @@
                 "description": "VM Publisher."
             }
         },
-        imageOffer": {
+        "imageOffer": {
             "type": "string",
             "metadata": {
                 "description": "VM Offer."
