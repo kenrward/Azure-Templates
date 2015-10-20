@@ -77,8 +77,9 @@
     },
     "variables": {
 		"vmSourceImageName": "a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201412.01-en.us-127GB.vhd",
-		"imageOffer": "2012-R2-Datacenter",
+		"imageOffer": "WindowsServer",
 		"imageSKU": "2012-R2-Datacenter",
+		"imagePublisher": "MicrosoftWindowsServer",
         "dnsNameForPublicIP": "[concat(parameters('prefixName'),'-',parameters('project'))]",
 		"OSDiskName": "[concat(parameters('prefixName'),'-',parameters('project'),'-osdisk')]",
 		"availabilitySetName": "[concat(parameters('prefixName'),'-',parameters('project'),'-avset')]",
