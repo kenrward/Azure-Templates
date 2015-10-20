@@ -50,7 +50,7 @@
 		"subnetName":  {		
             "type": "string",		
             "metadata": {		
-                "description": "Vnet name (e.g., nos-web)"		
+                "description": "Vnet name (e.g., nos-eus2-mgmt-snet)"		
             }		
         },
 		"subnetPrefix":  {		
