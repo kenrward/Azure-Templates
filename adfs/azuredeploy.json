@@ -47,7 +47,7 @@
                 "description": "Storage Account Name(must be all lowercase, no special characters)"		
             }		
         },
-		"virtualNetworkName":  {		
+		"subnetName":  {		
             "type": "string",		
             "metadata": {		
                 "description": "Vnet name (e.g., nos-web)"		
@@ -106,7 +106,7 @@
         "vmStorageAccountContainerName": "vhds",
         "vmName": "[concat(parameters('prefixName'),'-',parameters('project'),'-vm')]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
 		"lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('lbName'))]",
 		"numberOfInstances": 2,
 		"frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontend')]",
