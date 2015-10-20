@@ -98,7 +98,7 @@
         "nicName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nic')]",
         "addressPrefix": "10.82.0.0/16",
         "subnetName": "nos-eus2-vnet",
-        "subnetPrefix": parameters('subnetPrefix')
+        "subnetPrefix": "parameters('subnetPrefix')",
 		"lbName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nlb')]",
         "storageAccountType": "Standard_LRS",
         "publicIPAddressName": "[concat(parameters('prefixName'),'-',parameters('project'),'-pubip')]",
@@ -106,7 +106,7 @@
 		"publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
         "vmStorageAccountContainerName": "vhds",
         "vmName": "[concat(parameters('prefixName'),'-',parameters('project'),'-vm')]",
-        "virtualNetworkName": parameters('virtualNetworkName'),
+        "virtualNetworkName": "parameters('virtualNetworkName')",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
 		"lbID": "[resourceId('Microsoft.Network/loadBalancers',variables('lbName'))]",
