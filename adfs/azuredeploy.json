@@ -97,7 +97,7 @@
 		"availabilitySetName": "[concat(parameters('prefixName'),'-',parameters('project'),'-avset')]",
         "nicName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nic')]",
         "addressPrefix": "10.72.0.0/16",
-        "virtualNetworkName": "nos-eus2-vnet",
+        "virtualNetworkName": "nos-eus2-ssmc-vpn",
 		"lbName": "[concat(parameters('prefixName'),'-',parameters('project'),'-nlb')]",
         "storageAccountType": "Standard_LRS",
         "publicIPAddressName": "[concat(parameters('prefixName'),'-',parameters('project'),'-pubip')]",
