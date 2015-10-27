@@ -54,7 +54,8 @@
             }		
         },
 		"subnetPrefix":  {		
-            "type": "string",		
+            "type": "string",
+			"defaultValue": "nos-eus2-mgmt-snet",			
             "metadata": {		
                 "description": "Subnet (e.g., 10.82.10.0/24)"		
             }		
