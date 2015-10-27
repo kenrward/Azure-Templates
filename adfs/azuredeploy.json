@@ -49,7 +49,7 @@
         },
 		"subnetName":  {		
             "type": "string",
-			"defaultValue": "nos-eus2-mgmt-snet"
+			"defaultValue": "nos-eus2-mgmt-snet",
             "metadata": {		
                 "description": "Vnet name (e.g., nos-eus2-mgmt-snet)"		
             }		
