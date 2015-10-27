@@ -48,14 +48,15 @@
             }		
         },
 		"subnetName":  {		
-            "type": "string",		
+            "type": "string",	
+			"defaultValue": "nos-eus2-mgmt-snet",
             "metadata": {		
-                "description": "Vnet name (e.g., nos-eus2-mgmt-snet)"		
+                "description": "Subnet name (e.g., nos-eus2-mgmt-snet)"		
             }		
         },
 		"subnetPrefix":  {		
             "type": "string",
-			"defaultValue": "nos-eus2-mgmt-snet",			
+			"defaultValue": "10.82.9.0/24",			
             "metadata": {		
                 "description": "Subnet (e.g., 10.82.10.0/24)"		
             }		
