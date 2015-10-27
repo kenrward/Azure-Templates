@@ -56,9 +56,9 @@
         },
 		"subnetPrefix":  {		
             "type": "string",
-			"defaultValue": "10.82.9.0/24",			
+			"defaultValue": "10.72.9.0/24",			
             "metadata": {		
-                "description": "Subnet (e.g., 10.82.10.0/24)"		
+                "description": "Subnet (e.g., 10.72.10.0/24)"		
             }		
         },
 		"virtualNetworkResourceGroup":  {		
